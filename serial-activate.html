@@ -5,10 +5,17 @@
 <script>
   (function(){
     try{
+      // TEMP PREVIEW BYPASS: set to false (or delete this line) to bring the login gate back
+      var PREVIEW_BYPASS_LOGIN = true;
+      if (PREVIEW_BYPASS_LOGIN){ document.documentElement.classList.add('authed'); }
+
       var saved = localStorage.getItem('theme');
       var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (saved === 'dark' || (!saved && prefersDark)){
         document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      if (localStorage.getItem('authed') === 'true'){
+        document.documentElement.classList.add('authed');
       }
     } catch(e){ /* ignore */ }
   })();
@@ -217,7 +224,7 @@
   .customer-card p{font-size:13px; color:var(--muted);}
 
   /* ---------- Dashboard ---------- */
-  .dash-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .dash-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:18px; overflow:hidden;}
   .dash-card{background:var(--paper); padding:26px 22px; transition:background .25s ease, transform .25s ease;}
   .dash-card:hover{background:var(--paper-dim); transform:translateY(-3px);}
   .dash-top{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px;}
@@ -314,10 +321,27 @@
 
   footer{
     background:var(--ink-fixed); color:rgba(244,247,242,0.65);
-    padding:36px 6vw; display:flex; justify-content:space-between; align-items:center;
-    font-size:13px; flex-wrap:wrap; gap:12px; margin-top:70px;
+    padding:48px 6vw 32px; font-size:13px; margin-top:70px;
+  }
+  .footer-grid{
+    display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:32px;
+    padding-bottom:28px; border-bottom:1px solid rgba(244,247,242,0.12);
+  }
+  .footer-col h4{
+    font-size:12px; font-weight:600; letter-spacing:0.03em; text-transform:uppercase;
+    color:rgba(244,247,242,0.45); margin-bottom:12px;
+  }
+  .footer-col p{margin:0 0 4px; line-height:1.6;}
+  .footer-col a{color:rgba(244,247,242,0.75); text-decoration:none;}
+  .footer-col a:hover{color:var(--green);}
+  .footer-bottom{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:12px; padding-top:20px;
   }
   footer .brand{color:var(--paper-fixed);}
+  @media (max-width:820px){
+    .footer-grid{grid-template-columns:1fr;}
+  }
 
   @media (max-width:820px){
     .hero-grid{grid-template-columns:1fr;}
@@ -329,47 +353,95 @@
   }
 
 
+
+  /* ---------- Login gate ---------- */
+  #login-gate{
+    position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
+    background:var(--ink-fixed); padding:24px;
+  }
+  html.authed #login-gate{display:none;}
+  .login-card{
+    width:100%; max-width:340px; background:rgba(244,247,242,0.05);
+    border:1px solid rgba(244,247,242,0.14); border-radius:18px; padding:32px 28px;
+    backdrop-filter:blur(8px); text-align:center;
+  }
+  .login-brand{color:var(--green); font-size:13px; margin-bottom:18px;}
+  .login-card h2{color:var(--paper-fixed); font-size:20px; font-weight:700; margin-bottom:20px;}
+  .login-card input{
+    width:100%; padding:12px 14px; margin-bottom:12px; border-radius:8px;
+    border:1px solid rgba(244,247,242,0.2); background:rgba(244,247,242,0.06); color:var(--paper-fixed);
+    font-size:14px;
+  }
+  .login-card input::placeholder{color:rgba(244,247,242,0.4);}
+  .login-card input:focus{outline:none; border-color:var(--green);}
+  .login-card .btn-primary{width:100%; justify-content:center; margin-top:6px;}
+  .login-error{color:#ff8a75; font-size:12px; margin-top:12px;}
+  .login-note{color:rgba(244,247,242,0.4); font-size:11px; margin-top:18px; line-height:1.5;}
+
+  /* ---------- Language toggle ---------- */
+  .lang-toggle{
+    width:36px; height:36px; border-radius:999px; border:1px solid var(--line);
+    background:transparent; color:var(--ink); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:border-color .2s ease, color .2s ease, transform .2s ease;
+    font-family:'IBM Plex Mono','IBM Plex Sans Thai', monospace; font-size:11px; font-weight:600;
+  }
+  .lang-toggle:hover{border-color:var(--green); color:var(--green); transform:translateY(-2px);}
 </style>
 </head>
 <body>
+
+<div id="login-gate">
+  <form id="login-form" class="login-card">
+    <div class="login-brand mono">E-MERCHANT // BY SOFTWARE</div>
+    <h2 data-th="เข้าสู่ระบบ" data-en="Sign in">เข้าสู่ระบบ</h2>
+    <input type="text" id="login-user" autocomplete="username" data-i18n-placeholder data-th="ชื่อผู้ใช้" data-en="Username" placeholder="ชื่อผู้ใช้">
+    <input type="password" id="login-pass" autocomplete="current-password" data-i18n-placeholder data-th="รหัสผ่าน" data-en="Password" placeholder="รหัสผ่าน">
+    <button type="submit" class="btn btn-primary" data-th="เข้าสู่ระบบ" data-en="Sign in">เข้าสู่ระบบ</button>
+    <div id="login-error" class="login-error" style="display:none;" data-th="ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง" data-en="Incorrect username or password">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>
+    <div class="login-note mono" data-th="สำหรับพนักงานภายในทีม Software เท่านั้น" data-en="For internal Software team members only">สำหรับพนักงานภายในทีม Software เท่านั้น</div>
+  </form>
+</div>
+
 
 <header>
   <a href="index.html" class="brand">E-Merchant <span>// by software</span></a>
   <nav>
     <a href="dashboard.html">Dashboard</a>
     <a href="serial-activate.html" class="active">Serial Activate</a>
-    <a href="index.html#customers">ลูกค้า</a>
+    <a href="equipment.html" data-th="อุปกรณ์" data-en="Equipment">อุปกรณ์</a>
+    <a href="index.html#customers" data-th="ลูกค้า" data-en="Customers">ลูกค้า</a>
     <a href="index.html#business">ธุรกิจ</a>
-    <a href="index.html#teams">ทีมงาน</a>
+    <a href="index.html#teams" data-th="ทีมงาน" data-en="Team">ทีมงาน</a>
+    <button id="lang-toggle" class="lang-toggle" aria-label="Switch language" title="EN / TH">EN</button>
     <button id="theme-toggle" class="theme-toggle" aria-label="สลับโหมดมืด/สว่าง" title="สลับโหมดมืด/สว่าง"><svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg></button>
-    <a href="index.html#contact" class="nav-cta">ติดต่อทีม</a>
+    <a href="index.html#contact" class="nav-cta" data-th="ติดต่อทีม" data-en="Contact Us">ติดต่อทีม</a>
   </nav>
 </header>
 
 <div id="wed-banner" class="wed-banner" style="display:none;">
   <span class="wed-dot"></span>
-  <span>วันนี้วันพุธ — อย่าลืมส่ง Report ประจำสัปดาห์</span>
+  <span data-th="วันนี้วันพุธ — อย่าลืมส่ง Report ประจำสัปดาห์" data-en="It's Wednesday — don't forget to send the weekly report">วันนี้วันพุธ — อย่าลืมส่ง Report ประจำสัปดาห์</span>
 </div>
 
 <section class="page-hero">
   <div class="hero-tag mono">internal.serial.lookup</div>
-  <h1>ค้นหา Serial Number</h1>
-  <p>พิมพ์ Serial Number เพื่อค้นหารหัส Activate ที่ตรงกัน ข้อมูลทั้งหมดประมวลผลอยู่ในเบราว์เซอร์ของคุณเท่านั้น ไม่ถูกส่งออกไปที่ใด</p>
+  <h1 data-th="ค้นหา Serial Number" data-en="Search Serial Number">ค้นหา Serial Number</h1>
+  <p data-th="พิมพ์ Serial Number เพื่อค้นหารหัส Activate ที่ตรงกัน ข้อมูลทั้งหมดประมวลผลอยู่ในเบราว์เซอร์ของคุณเท่านั้น ไม่ถูกส่งออกไปที่ใด" data-en="Enter a Serial Number to find its matching Activation Code. All data is processed in your browser only and never sent anywhere.">พิมพ์ Serial Number เพื่อค้นหารหัส Activate ที่ตรงกัน ข้อมูลทั้งหมดประมวลผลอยู่ในเบราว์เซอร์ของคุณเท่านั้น ไม่ถูกส่งออกไปที่ใด</p>
 </section>
 
 <section id="lookup">
   <div class="section-head reveal">
-    <h2>ค้นหา Activation Code</h2>
+    <h2 data-th="ค้นหา Activation Code" data-en="Search Activation Code">ค้นหา Activation Code</h2>
     <div class="dash-controls">
       <span class="count mono" id="record-count">0 รายการในระบบ</span>
-      <button class="btn-import mono" id="import-btn">นำเข้าไฟล์ Excel</button>
+      <button class="btn-import mono" id="import-btn" data-th="นำเข้าไฟล์ Excel" data-en="Import Excel File">นำเข้าไฟล์ Excel</button>
       <input type="file" id="excel-input" accept=".xlsx,.xls" style="display:none">
     </div>
   </div>
 
   <div class="search-box reveal">
-    <input type="text" id="serial-input" class="mono" placeholder="พิมพ์ Serial Number แล้วกด Enter หรือกดปุ่มค้นหา">
-    <button id="search-btn" class="btn btn-primary">ค้นหา</button>
+    <input type="text" id="serial-input" class="mono" data-i18n-placeholder data-th="พิมพ์ Serial Number แล้วกด Enter หรือกดปุ่มค้นหา" data-en="Type a Serial Number and press Enter, or click Search" placeholder="พิมพ์ Serial Number แล้วกด Enter หรือกดปุ่มค้นหา">
+    <button id="search-btn" class="btn btn-primary" data-th="ค้นหา" data-en="Search">ค้นหา</button>
   </div>
 
   <div id="search-result"></div>
@@ -377,15 +449,34 @@
   <p class="dash-note mono" id="import-note">* ยังไม่มีข้อมูล — กด "นำเข้าไฟล์ Excel" เพื่อโหลดตาราง Serial-Code (คอลัมน์แรก = Serial, คอลัมน์ที่สอง = Code)</p>
 
   <div class="dash-link-row">
-    <input type="text" id="excel-link-input" class="mono" placeholder="หรือวางลิงก์แชร์ไฟล์ Excel (Anyone with the link can view)">
-    <button id="connect-link-btn" class="btn-import mono">เชื่อมต่อลิงก์</button>
+    <input type="text" id="excel-link-input" class="mono" data-i18n-placeholder data-th="หรือวางลิงก์แชร์ไฟล์ Excel (Anyone with the link can view)" data-en="Or paste the Excel share link (Anyone with the link can view)" placeholder="หรือวางลิงก์แชร์ไฟล์ Excel (Anyone with the link can view)">
+    <button id="connect-link-btn" class="btn-import mono" data-th="เชื่อมต่อลิงก์" data-en="Connect Link">เชื่อมต่อลิงก์</button>
   </div>
   <p class="dash-note mono" id="link-status"></p>
 </section>
 
 <footer id="contact">
-  <div class="brand mono">E-Merchant // by software</div>
-  <div>ติดต่อทีม: software-team@company.internal</div>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="brand mono" style="margin-bottom:10px;">E-Merchant // by software</div>
+      <p>ทีม Software ดูแลระบบ IT เครื่องบันทึกเงินสด เครื่องชั่งดิจิทัล และระบบบริหารร้านค้าให้ลูกค้าทุกสาขา</p>
+    </div>
+    <div class="footer-col">
+      <h4 class="mono">ศูนย์บริการ (นนทบุรี)</h4>
+      <p>168-169 หมู่ที่ 2 ถ.กาญจนาภิเษก</p>
+      <p>ต.บางคูเวียง อ.บางกรวย</p>
+      <p>จ.นนทบุรี 11130</p>
+    </div>
+    <div class="footer-col">
+      <h4 class="mono">ติดต่อทีม</h4>
+      <p><a href="tel:0202662990072">02-026-6299 ต่อ 0072</a></p>
+      <p><a href="mailto:software-team@company.internal">software-team@company.internal</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom mono">
+    <span>E-Merchant by Software</span>
+    <span>Internal use only</span>
+  </div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -612,6 +703,50 @@
           try{ localStorage.setItem('theme', 'dark'); } catch(e){}
         }
         render();
+      });
+    }
+  })();
+
+  // Login gate
+  (function(){
+    const form = document.getElementById('login-form');
+    const errorEl = document.getElementById('login-error');
+    if (!form) return;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const user = document.getElementById('login-user').value.trim();
+      const pass = document.getElementById('login-pass').value;
+      if (user === 'admin' && pass === 'nex@dmin'){
+        try{ localStorage.setItem('authed', 'true'); } catch(err){}
+        document.documentElement.classList.add('authed');
+        if (errorEl) errorEl.style.display = 'none';
+      } else {
+        if (errorEl) errorEl.style.display = 'block';
+      }
+    });
+  })();
+
+  // Language toggle (TH default / EN)
+  (function(){
+    const btn = document.getElementById('lang-toggle');
+    function applyLang(lang){
+      document.querySelectorAll('[data-th]').forEach(el => {
+        const val = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-th');
+        if (val === null) return;
+        if (el.hasAttribute('data-i18n-placeholder')) el.setAttribute('placeholder', val);
+        else el.innerHTML = val;
+      });
+      document.documentElement.lang = lang === 'en' ? 'en' : 'th';
+      if (btn) btn.textContent = lang === 'en' ? 'TH' : 'EN';
+      try{ localStorage.setItem('lang', lang); } catch(e){}
+    }
+    let lang = 'th';
+    try{ lang = localStorage.getItem('lang') || 'th'; } catch(e){}
+    applyLang(lang);
+    if (btn){
+      btn.addEventListener('click', () => {
+        lang = (btn.textContent === 'EN') ? 'en' : 'th';
+        applyLang(lang);
       });
     }
   })();
