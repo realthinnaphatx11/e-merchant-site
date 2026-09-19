@@ -75,6 +75,31 @@
   .brand{font-weight:700; font-size:18px; letter-spacing:-0.01em; text-decoration:none; color:var(--ink);}
   .brand span{color:var(--green); font-family:'IBM Plex Mono','IBM Plex Sans Thai', monospace;}
   nav{display:flex; gap:28px; align-items:center;}
+  .nav-links{display:flex; align-items:center; gap:28px;}
+  .nav-utils{display:flex; align-items:center; gap:14px;}
+  .util-row{display:flex; align-items:center; gap:14px;}
+  .nav-toggle{
+    display:none; background:none; border:none; padding:6px; color:var(--ink);
+    cursor:pointer; align-items:center; justify-content:center; border-radius:8px;
+  }
+  .nav-toggle:hover{color:var(--green);}
+
+  @media (max-width:820px){
+    header{position:sticky;}
+    .nav-toggle{display:flex;}
+    #site-nav{
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--paper); border-bottom:1px solid var(--line);
+      flex-direction:column; align-items:stretch; gap:0;
+      max-height:0; overflow:hidden; transition:max-height .3s ease;
+      box-shadow:0 16px 30px rgba(0,0,0,0.1);
+    }
+    #site-nav.open{max-height:600px;}
+    .nav-links{flex-direction:column; align-items:stretch; gap:0;}
+    .nav-links a{padding:16px 6vw; border-bottom:1px solid var(--line); opacity:1;}
+    .nav-utils{flex-direction:column; align-items:stretch; gap:12px; padding:16px 6vw;}
+    .nav-utils .nav-cta{width:100%; text-align:center; border-radius:8px; padding:14px;}
+  }
   nav a{color:var(--ink); text-decoration:none; font-size:14px; font-weight:500; opacity:0.75; transition:opacity .2s;}
   nav a:hover, nav a.active{opacity:1;}
   .nav-cta{
@@ -349,7 +374,7 @@
     .service-grid{grid-template-columns:repeat(2,1fr);}
     .customer-grid{grid-template-columns:repeat(2,1fr);}
     .dash-grid{grid-template-columns:1fr;}
-    nav a:not(.nav-cta){display:none;}
+
   }
 
 
@@ -405,16 +430,23 @@
 
 <header>
   <a href="index.html" class="brand">E-Merchant <span>// by software</span></a>
-  <nav>
-    <a href="dashboard.html" class="active">Dashboard</a>
-    <a href="serial-activate.html">Serial Activate</a>
-    <a href="equipment.html" data-th="อุปกรณ์" data-en="Equipment">อุปกรณ์</a>
-    <a href="index.html#customers" data-th="ลูกค้า" data-en="Customers">ลูกค้า</a>
-    <a href="index.html#business">ธุรกิจ</a>
-    <a href="index.html#teams" data-th="ทีมงาน" data-en="Team">ทีมงาน</a>
-    <button id="lang-toggle" class="lang-toggle" aria-label="Switch language" title="EN / TH">EN</button>
-    <button id="theme-toggle" class="theme-toggle" aria-label="สลับโหมดมืด/สว่าง" title="สลับโหมดมืด/สว่าง"><svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg></button>
-    <a href="index.html#contact" class="nav-cta" data-th="ติดต่อทีม" data-en="Contact Us">ติดต่อทีม</a>
+  <button id="nav-toggle" class="nav-toggle" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  <nav id="site-nav">
+    <div class="nav-links">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="serial-activate.html">Serial Activate</a>
+      <a href="equipment.html" data-th="อุปกรณ์" data-en="Equipment">อุปกรณ์</a>
+      <a href="index.html#customers" data-th="ลูกค้า" data-en="Customers">ลูกค้า</a>
+      <a href="index.html#business">ธุรกิจ</a>
+      <a href="index.html#teams" data-th="ทีมงาน" data-en="Team">ทีมงาน</a>
+    </div>
+    <div class="nav-utils">
+      <div class="util-row">
+        <button id="lang-toggle" class="lang-toggle" aria-label="Switch language" title="EN / TH">EN</button>
+        <button id="theme-toggle" class="theme-toggle" aria-label="สลับโหมดมืด/สว่าง" title="สลับโหมดมืด/สว่าง"><svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg></button>
+      </div>
+      <a href="index.html#contact" class="nav-cta" data-th="ติดต่อทีม" data-en="Contact Us">ติดต่อทีม</a>
+    </div>
   </nav>
 </header>
 
@@ -481,13 +513,13 @@
     </div>
     <div class="footer-col">
       <h4 class="mono">ศูนย์บริการ (นนทบุรี)</h4>
-      <p>168-169 หมู่ที่ 2 ถ.กาญจนาภิเษก</p>
-      <p>ต.บางคูเวียง อ.บางกรวย</p>
-      <p>จ.นนทบุรี 11130</p>
+      <p data-th="168-169 หมู่ที่ 2 ถ.กาญจนาภิเษก" data-en="168-169 Moo 2, Kanchanaphisek Rd.">168-169 หมู่ที่ 2 ถ.กาญจนาภิเษก</p>
+      <p data-th="ต.บางคูเวียง อ.บางกรวย" data-en="Bang Khu Wiang, Bang Kruai">ต.บางคูเวียง อ.บางกรวย</p>
+      <p data-th="จ.นนทบุรี 11130" data-en="Nonthaburi 11130">จ.นนทบุรี 11130</p>
     </div>
     <div class="footer-col">
       <h4 class="mono">ติดต่อทีม</h4>
-      <p><a href="tel:0202662990072">02-026-6299 ต่อ 0072</a></p>
+      <p><a href="tel:0202662990072" data-th="02-026-6299 ต่อ 0072" data-en="02-026-6299 ext. 0072">02-026-6299 ต่อ 0072</a></p>
       <p><a href="mailto:software-team@company.internal">software-team@company.internal</a></p>
     </div>
   </div>
@@ -694,6 +726,29 @@
         applyLang(lang);
       });
     }
+  })();
+
+  // Mobile hamburger nav
+  (function(){
+    const toggle = document.getElementById('nav-toggle');
+    const nav = document.getElementById('site-nav');
+    if (!toggle || !nav) return;
+    toggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 820){
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
   })();
 </script>
 

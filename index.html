@@ -75,6 +75,31 @@
   .brand{font-weight:700; font-size:18px; letter-spacing:-0.01em; text-decoration:none; color:var(--ink);}
   .brand span{color:var(--green); font-family:'IBM Plex Mono','IBM Plex Sans Thai', monospace;}
   nav{display:flex; gap:28px; align-items:center;}
+  .nav-links{display:flex; align-items:center; gap:28px;}
+  .nav-utils{display:flex; align-items:center; gap:14px;}
+  .util-row{display:flex; align-items:center; gap:14px;}
+  .nav-toggle{
+    display:none; background:none; border:none; padding:6px; color:var(--ink);
+    cursor:pointer; align-items:center; justify-content:center; border-radius:8px;
+  }
+  .nav-toggle:hover{color:var(--green);}
+
+  @media (max-width:820px){
+    header{position:sticky;}
+    .nav-toggle{display:flex;}
+    #site-nav{
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--paper); border-bottom:1px solid var(--line);
+      flex-direction:column; align-items:stretch; gap:0;
+      max-height:0; overflow:hidden; transition:max-height .3s ease;
+      box-shadow:0 16px 30px rgba(0,0,0,0.1);
+    }
+    #site-nav.open{max-height:600px;}
+    .nav-links{flex-direction:column; align-items:stretch; gap:0;}
+    .nav-links a{padding:16px 6vw; border-bottom:1px solid var(--line); opacity:1;}
+    .nav-utils{flex-direction:column; align-items:stretch; gap:12px; padding:16px 6vw;}
+    .nav-utils .nav-cta{width:100%; text-align:center; border-radius:8px; padding:14px;}
+  }
   nav a{color:var(--ink); text-decoration:none; font-size:14px; font-weight:500; opacity:0.75; transition:opacity .2s;}
   nav a:hover, nav a.active{opacity:1;}
   .nav-cta{
@@ -385,7 +410,7 @@
     .service-grid{grid-template-columns:repeat(2,1fr);}
     .customer-grid{grid-template-columns:repeat(2,1fr);}
     .dash-grid{grid-template-columns:1fr;}
-    nav a:not(.nav-cta){display:none;}
+
   }
 
 
@@ -441,16 +466,23 @@
 
 <header>
   <a href="index.html" class="brand">E-Merchant <span>// by software</span></a>
-  <nav>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="serial-activate.html">Serial Activate</a>
-    <a href="equipment.html" data-th="อุปกรณ์" data-en="Equipment">อุปกรณ์</a>
-    <a href="#customers" data-th="ลูกค้า" data-en="Customers">ลูกค้า</a>
-    <a href="#business">ธุรกิจ</a>
-    <a href="#teams" data-th="ทีมงาน" data-en="Team">ทีมงาน</a>
-    <button id="lang-toggle" class="lang-toggle" aria-label="Switch language" title="EN / TH">EN</button>
-    <button id="theme-toggle" class="theme-toggle" aria-label="สลับโหมดมืด/สว่าง" title="สลับโหมดมืด/สว่าง"><svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg></button>
-    <a href="#contact" class="nav-cta" data-th="ติดต่อทีม" data-en="Contact Us">ติดต่อทีม</a>
+  <button id="nav-toggle" class="nav-toggle" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  <nav id="site-nav">
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="serial-activate.html">Serial Activate</a>
+      <a href="equipment.html" data-th="อุปกรณ์" data-en="Equipment">อุปกรณ์</a>
+      <a href="#customers" data-th="ลูกค้า" data-en="Customers">ลูกค้า</a>
+      <a href="#business">ธุรกิจ</a>
+      <a href="#teams" data-th="ทีมงาน" data-en="Team">ทีมงาน</a>
+    </div>
+    <div class="nav-utils">
+      <div class="util-row">
+        <button id="lang-toggle" class="lang-toggle" aria-label="Switch language" title="EN / TH">EN</button>
+        <button id="theme-toggle" class="theme-toggle" aria-label="สลับโหมดมืด/สว่าง" title="สลับโหมดมืด/สว่าง"><svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg></button>
+      </div>
+      <a href="#contact" class="nav-cta" data-th="ติดต่อทีม" data-en="Contact Us">ติดต่อทีม</a>
+    </div>
   </nav>
 </header>
 
@@ -545,49 +577,49 @@
   </div>
 
   <div class="team-group reveal">
-    <div class="team-group-head"><h3>Team Remote</h3><span class="n mono">9 คน</span></div>
+    <div class="team-group-head"><h3>Team Remote</h3><span class="n mono" data-th="9 คน" data-en="9 people">9 คน</span></div>
     <div class="team-grid">
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3>วราภรณ์ สุขสาร</h3><div class="role">หญิง</div><span class="role-tag sup mono">Supervisor</span></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>ธนกร เตชเกรียงไกรกุล</h3><div class="role">ชื่อเล่น: อุ๊ก</div></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>พีรภัทร แตงอ่อน</h3><div class="role">ชื่อเล่น: เจมส์</div></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>ภาณุ แก้ววงษ์วาล</h3><div class="role">ชื่อเล่น: บาส</div></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>เลมินทร์ ขุนสพเนตร</h3><div class="role">ชื่อเล่น: โบ๊ท</div><span class="role-tag intern mono">ฝึกงาน</span></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>คเณศร์ ชัยณรงค์</h3><div class="role">ชื่อเล่น: เช็ค</div><span class="role-tag intern mono">ฝึกงาน</span></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>จิฏติพัฒน์ วิทยาฉายแสง</h3><div class="role">ชื่อเล่น: พัด</div></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>สิทธิพร บุญเฟื่อง</h3><div class="role">ชื่อเล่น: ซัน</div></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>ทินภัทร ชอบค้า</h3><div class="role">ชื่อเล่น: อ้น</div><span class="role-tag sen mono">Senior</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3 data-th="วราภรณ์ สุขสาร" data-en="Waraporn Suksan">วราภรณ์ สุขสาร</h3><div class="role" data-th="หญิง" data-en="Female">หญิง</div><span class="role-tag sup mono">Supervisor</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="ธนกร เตชเกรียงไกรกุล" data-en="Thanakorn Techkriangkraikul">ธนกร เตชเกรียงไกรกุล</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="อุ๊ก" data-en="Ouk">อุ๊ก</span></div></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="พีรภัทร แตงอ่อน" data-en="Peerapat Taeng-on">พีรภัทร แตงอ่อน</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="เจมส์" data-en="James">เจมส์</span></div></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="ภาณุ แก้ววงษ์วาล" data-en="Phanu Kaewwongwan">ภาณุ แก้ววงษ์วาล</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="บาส" data-en="Bas">บาส</span></div></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="เลมินทร์ ขุนสพเนตร" data-en="Laemin Khunsopanet">เลมินทร์ ขุนสพเนตร</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="โบ๊ท" data-en="Boat">โบ๊ท</span></div><span class="role-tag intern mono" data-th="ฝึกงาน" data-en="Intern">ฝึกงาน</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="คเณศร์ ชัยณรงค์" data-en="Khanet Chainarong">คเณศร์ ชัยณรงค์</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="เช็ค" data-en="Check">เช็ค</span></div><span class="role-tag intern mono" data-th="ฝึกงาน" data-en="Intern">ฝึกงาน</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="จิฏติพัฒน์ วิทยาฉายแสง" data-en="Jittiphat Witthayachaisaeng">จิฏติพัฒน์ วิทยาฉายแสง</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="พัด" data-en="Phat">พัด</span></div></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="สิทธิพร บุญเฟื่อง" data-en="Sittiporn Boonfueang">สิทธิพร บุญเฟื่อง</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="ซัน" data-en="Sun">ซัน</span></div></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="ทินภัทร ชอบค้า" data-en="Thinnaphat Chopkha">ทินภัทร ชอบค้า</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="อ้น" data-en="On">อ้น</span></div><span class="role-tag sen mono">Senior</span></div>
     </div>
   </div>
 
   <div class="team-group reveal">
-    <div class="team-group-head"><h3>Team Makro</h3><span class="n mono">3 คน</span></div>
+    <div class="team-group-head"><h3>Team Makro</h3><span class="n mono" data-th="3 คน" data-en="3 people">3 คน</span></div>
     <div class="team-grid">
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3>ภัคจิรา เอี่ยมชัย</h3><div class="role">ชื่อเล่น: กัน</div><span class="team-badge mono">Makro</span></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3>กฤติยา นาสืบ</h3><div class="role">ชื่อเล่น: น๊อต</div><span class="team-badge mono">Makro</span></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>ปฏิพล ว่องประเสริฐ</h3><div class="role">ชื่อเล่น: ทีน</div><span class="team-badge mono">Makro</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3 data-th="ภัคจิรา เอี่ยมชัย" data-en="Phakjira Iamchai">ภัคจิรา เอี่ยมชัย</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="กัน" data-en="Gun">กัน</span></div><span class="team-badge mono">Makro</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3 data-th="กฤติยา นาสืบ" data-en="Krittiya Nasueb">กฤติยา นาสืบ</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="น๊อต" data-en="Not">น๊อต</span></div><span class="team-badge mono">Makro</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="ปฏิพล ว่องประเสริฐ" data-en="Patipol Wongprasert">ปฏิพล ว่องประเสริฐ</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="ทีน" data-en="Teen">ทีน</span></div><span class="team-badge mono">Makro</span></div>
     </div>
   </div>
 
   <div class="team-group reveal">
-    <div class="team-group-head"><h3>Team CFW</h3><span class="n mono">4 คน</span></div>
+    <div class="team-group-head"><h3>Team CFW</h3><span class="n mono" data-th="4 คน" data-en="4 people">4 คน</span></div>
     <div class="team-grid">
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3>นราวรรณ เฮงมี</h3><div class="role">ชื่อเล่น: เค้ก</div><span class="team-badge mono">CFW</span></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3>จีรวรรณ ปราบหนองบัว</h3><div class="role">ชื่อเล่น: จี</div><span class="team-badge mono">CFW</span></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>ทวีลาภ บุญโพธิ์แก้ว</h3><div class="role"></div><span class="team-badge mono">CFW</span></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>เสฏฐวุฒิ คารมปราชญ์</h3><div class="role"></div><span class="team-badge mono">CFW</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3 data-th="นราวรรณ เฮงมี" data-en="Narawan Hengmee">นราวรรณ เฮงมี</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="เค้ก" data-en="Cake">เค้ก</span></div><span class="team-badge mono">CFW</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3 data-th="จีรวรรณ ปราบหนองบัว" data-en="Jeerawan Prabnongbua">จีรวรรณ ปราบหนองบัว</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="จี" data-en="Jee">จี</span></div><span class="team-badge mono">CFW</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="ทวีลาภ บุญโพธิ์แก้ว" data-en="Taweelap Boonphokaew">ทวีลาภ บุญโพธิ์แก้ว</h3><div class="role"></div><span class="team-badge mono">CFW</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="เสฏฐวุฒิ คารมปราชญ์" data-en="Settawut Karompraj">เสฏฐวุฒิ คารมปราชญ์</h3><div class="role"></div><span class="team-badge mono">CFW</span></div>
     </div>
   </div>
 
   <div class="team-group reveal">
-    <div class="team-group-head"><h3>Team B2B</h3><span class="n mono">2 คน</span></div>
+    <div class="team-group-head"><h3>Team B2B</h3><span class="n mono" data-th="2 คน" data-en="2 people">2 คน</span></div>
     <div class="team-grid">
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3>ไกรยุทธ แก้วขจร</h3><div class="role">ชื่อเล่น: ฟิว</div><span class="team-badge mono">B2B</span></div>
-      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3>ปวีณา โตเทียน</h3><div class="role">ชื่อเล่น: แคท</div><span class="team-badge mono">B2B</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="2"/></svg></div><h3 data-th="ไกรยุทธ แก้วขจร" data-en="Kraiyut Kaewkajorn">ไกรยุทธ แก้วขจร</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="ฟิว" data-en="Few">ฟิว</span></div><span class="team-badge mono">B2B</span></div>
+      <div class="member"><div class="avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3.3"/><path d="M12 11 L17.5 21 L6.5 21 Z"/></svg></div><h3 data-th="ปวีณา โตเทียน" data-en="Paweena Totian">ปวีณา โตเทียน</h3><div class="role"><span data-th="ชื่อเล่น:" data-en="Nickname:">ชื่อเล่น:</span> <span data-th="แคท" data-en="Cat">แคท</span></div><span class="team-badge mono">B2B</span></div>
     </div>
   </div>
 </section>
 
-<section style="padding-top:0; padding-bottom:40px;">
+<section style="padding-top:60px; padding-bottom:60px;">
   <div class="cta-slim reveal">
     <span data-th="มีคำถามเกี่ยวกับทีม Software อยู่ใช่ไหม" data-en="Have a question for our Software team?">มีคำถามเกี่ยวกับทีม Software อยู่ใช่ไหม</span>
     <a href="#contact" class="cta-slim-link" data-th="ติดต่อทีม →" data-en="Contact Us →">ติดต่อทีม →</a>
@@ -602,13 +634,13 @@
     </div>
     <div class="footer-col">
       <h4 class="mono" data-th="ศูนย์บริการ (นนทบุรี)" data-en="Service Center (Nonthaburi)">ศูนย์บริการ (นนทบุรี)</h4>
-      <p>168-169 หมู่ที่ 2 ถ.กาญจนาภิเษก</p>
-      <p>ต.บางคูเวียง อ.บางกรวย</p>
-      <p>จ.นนทบุรี 11130</p>
+      <p data-th="168-169 หมู่ที่ 2 ถ.กาญจนาภิเษก" data-en="168-169 Moo 2, Kanchanaphisek Rd.">168-169 หมู่ที่ 2 ถ.กาญจนาภิเษก</p>
+      <p data-th="ต.บางคูเวียง อ.บางกรวย" data-en="Bang Khu Wiang, Bang Kruai">ต.บางคูเวียง อ.บางกรวย</p>
+      <p data-th="จ.นนทบุรี 11130" data-en="Nonthaburi 11130">จ.นนทบุรี 11130</p>
     </div>
     <div class="footer-col">
       <h4 class="mono" data-th="ติดต่อทีม" data-en="Contact Us">ติดต่อทีม</h4>
-      <p><a href="tel:0202662990072">02-026-6299 ต่อ 0072</a></p>
+      <p><a href="tel:0202662990072" data-th="02-026-6299 ต่อ 0072" data-en="02-026-6299 ext. 0072">02-026-6299 ต่อ 0072</a></p>
       <p><a href="mailto:software-team@company.internal">software-team@company.internal</a></p>
     </div>
   </div>
@@ -726,6 +758,29 @@
         applyLang(lang);
       });
     }
+  })();
+
+  // Mobile hamburger nav
+  (function(){
+    const toggle = document.getElementById('nav-toggle');
+    const nav = document.getElementById('site-nav');
+    if (!toggle || !nav) return;
+    toggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 820){
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
   })();
 </script>
 
